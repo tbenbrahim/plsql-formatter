@@ -13,20 +13,18 @@ public class AliasLexerState extends AbstractLexerState {
 	private static final char DOUBLE_QUOTE = '"';
 
 	@Override
-	protected TokenType process(PeekableInputStream inputStream) throws IOException {
-		int c;
-		while ((c = inputStream.read()) != -1) {
-			if (c == DOUBLE_QUOTE && !inputStream.nextIs(DOUBLE_QUOTE)) {
-				return TokenType.ALIAS;
+	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
+		if (currentCharacter == DOUBLE_QUOTE){
+			int c;
+			while ((c = inputStream.read()) != -1) {
+				if (c == DOUBLE_QUOTE && !inputStream.nextIs(DOUBLE_QUOTE)) {
+					return TokenType.ALIAS;
+				}
+				addCharacter(c);
 			}
-			addCharacter(c);
+			return TokenType.UNEXPECTED_EOF;
 		}
-		return TokenType.UNEXPECTED_EOF;
-	}
-
-	@Override
-	public boolean test(int currentCharacter, PeekableInputStream inputStream) throws IOException {
-		return currentCharacter == DOUBLE_QUOTE;
+		return null;
 	}
 
 }

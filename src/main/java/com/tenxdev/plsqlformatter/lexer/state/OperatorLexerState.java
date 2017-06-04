@@ -7,72 +7,64 @@ import com.tenxdev.plsqlformatter.lexer.Token.TokenType;
 
 public class OperatorLexerState extends AbstractLexerState {
 
-	private String input;
-
 	@Override
-	protected TokenType process(PeekableInputStream inputStream) throws IOException {
-		addString(input);
-		return TokenType.OPERATOR;
-	}
-
-	@Override
-	public boolean test(int currentCharacter, PeekableInputStream inputStream) throws IOException {
+	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
 		switch (currentCharacter) {
 		case '=':
 		case '+':
 		case '*':
-			input = Character.toString((char) currentCharacter);
-			return true;
+			addCharacter(currentCharacter);
+			return TokenType.OPERATOR;
 		case '/':
 			if (inputStream.peek() != '*') {
-				input = "/";
-				return true;
+				addCharacter(currentCharacter);
+				return TokenType.OPERATOR;
 			}
-			return false;
+			return null;
 		case '-':
 			if (inputStream.peek() != '-') {
-				input = "-";
-				return true;
+				addCharacter(currentCharacter);
+				return TokenType.OPERATOR;
 			}
-			return false;
+			return null;
 		case '>':
-			input = inputStream.nextIs('=') ? Character.toString((char) currentCharacter) + "="
-					: Character.toString((char) currentCharacter);
-			return true;
+			addString(inputStream.nextIs('=') ? Character.toString((char) currentCharacter) + "="
+					: Character.toString((char) currentCharacter));
+			return TokenType.OPERATOR;
 		case '<':
 			if (inputStream.peek() == '<') {
-				return false;
+				return null;
 			}
 			if (inputStream.nextIs('=')) {
-				input = "<=";
+				addString("<=");
 			} else if (inputStream.nextIs('>')) {
-				input = "<>";
+				addString("<>");
 			} else {
-				input = "<";
+				addString("<");
 			}
-			return true;
+			return TokenType.OPERATOR;
 		case '|':
 			if (inputStream.nextIs('|')) {
-				input = "||";
-				return true;
+				addString("||");
+				return TokenType.OPERATOR;
 			}
-			return false;
+			return null;
 		case '!':
 		case '^':
 			if (inputStream.nextIs('=')) {
-				input = Character.toString((char) currentCharacter) + "=";
-				return true;
+				addString(Character.toString((char) currentCharacter) + "=");
+				return TokenType.OPERATOR;
 			}
-			return false;
+			return null;
 		case ':':
 			if (inputStream.nextIs('=')) {
-				input = ":=";
-				return true;
+				addString(":=");
+				return TokenType.OPERATOR;
 			}
-			return false;
+			return null;
+		default:
+			return null;
 		}
-
-		return false;
 	}
 
 }

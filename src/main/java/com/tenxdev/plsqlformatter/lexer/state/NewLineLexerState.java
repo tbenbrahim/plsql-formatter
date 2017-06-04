@@ -8,13 +8,12 @@ import com.tenxdev.plsqlformatter.lexer.Token.TokenType;
 public class NewLineLexerState extends AbstractLexerState {
 
 	@Override
-	protected TokenType process(PeekableInputStream inputStream) throws IOException {
-		return TokenType.NEWLINE;
-	}
-
-	@Override
-	public boolean test(int currentCharacter, PeekableInputStream inputStream) throws IOException {
-		return currentCharacter == '\n' || currentCharacter == '\r' && inputStream.nextIs('\n');
+	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
+		if (currentCharacter == '\n' || currentCharacter == '\r' && inputStream.nextIs('\n')){
+			addCharacter('\n');
+			return TokenType.NEWLINE;
+		}
+		return null;
 	}
 
 }

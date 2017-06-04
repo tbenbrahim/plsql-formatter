@@ -1,12 +1,9 @@
 package com.tenxdev.plsqlformatter.lexer.state;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
@@ -22,8 +19,7 @@ public class BlockCommentLexerStateTest {
 	public void test() throws IOException {
 		final String input = "/*test*1*/";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			assertTrue(blockCommentLexerState.test(in.read(), in));
-			final Token token = blockCommentLexerState.enter(in);
+			final Token token = blockCommentLexerState.accept(in.read(), in);
 			assertEquals(TokenType.BLOCK_COMMENT, token.getTokenType());
 			assertEquals("test*1", token.getText());
 		}
@@ -33,8 +29,7 @@ public class BlockCommentLexerStateTest {
 	public void testEof() throws IOException {
 		final String input = "/*test****";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			assertTrue(blockCommentLexerState.test(in.read(), in));
-			final Token token = blockCommentLexerState.enter(in);
+			final Token token = blockCommentLexerState.accept(in.read(), in);
 			assertEquals(TokenType.UNEXPECTED_EOF, token.getTokenType());
 		}
 	}
@@ -43,7 +38,7 @@ public class BlockCommentLexerStateTest {
 	public void testNotBlockComment() throws IOException {
 		final String input = "//test****";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			assertFalse(blockCommentLexerState.test(in.read(), in));
+			assertNull(blockCommentLexerState.accept(in.read(), in));
 		}
 
 	}

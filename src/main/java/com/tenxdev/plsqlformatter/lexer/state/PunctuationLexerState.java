@@ -7,16 +7,8 @@ import com.tenxdev.plsqlformatter.lexer.Token.TokenType;
 
 public class PunctuationLexerState extends AbstractLexerState {
 
-	private String input;
-
 	@Override
-	protected TokenType process(PeekableInputStream inputStream) throws IOException {
-		addString(input);
-		return TokenType.PUNCTUATION;
-	}
-
-	@Override
-	public boolean test(int currentCharacter, PeekableInputStream inputStream) throws IOException {
+	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
 		switch (currentCharacter) {
 		case '.':
 		case ';':
@@ -24,16 +16,16 @@ public class PunctuationLexerState extends AbstractLexerState {
 		case '%':
 		case '(':
 		case ')':
-			input = Character.toString((char) currentCharacter);
-			return true;
+			addString(Character.toString((char) currentCharacter));
+			return TokenType.PUNCTUATION;
 		case '=':
 			if (inputStream.nextIs('>')) {
-				input = "=>";
-				return true;
+				addString("=>");
+				return TokenType.PUNCTUATION;
 			}
-			return false;
+			return null;
 		}
-		return false;
+		return null;
 	}
 
 }

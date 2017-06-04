@@ -47,33 +47,20 @@ public class KeywordAndIdentifierLexerState extends AbstractLexerState {
 			"USING", "VALIDATE", "VALUES", "VARCHAR", "VARCHAR2", "VARIANCE", "VIEW", "VIEWS", "WHEN", "WHENEVER",
 			"WHERE", "WHILE", "WITH", "WORK", "WRITE", "XOR"));
 
-	private int initialCharacter;
-
-	private boolean isIdentifierCharacter(int character) {
+	private boolean isNonNumericIdentifierCharacter(int character) {
 		return Character.isAlphabetic(character) || character == '$' || character == '_' || character == '#';
 	}
 
 	@Override
-	protected TokenType process(PeekableInputStream inputStream) throws IOException {
-		addCharacter(initialCharacter);
-		int c;
-		while ((c = inputStream.peek()) != -1) {
-			if (isIdentifierCharacter(c) || Character.isDigit(c)) {
+	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
+		if (isNonNumericIdentifierCharacter(currentCharacter)) {
+			addCharacter(currentCharacter);
+			while (isNonNumericIdentifierCharacter(inputStream.peek()) || Character.isDigit(inputStream.peek())) {
 				addCharacter(inputStream.read());
-			} else {
-				break;
 			}
+			return textIsInSet(keywords) ? TokenType.KEYWORD : TokenType.IDENTIFIER;
 		}
-		return textIsInSet(keywords) ? TokenType.KEYWORD : TokenType.IDENTIFIER;
-	}
-
-	@Override
-	public boolean test(int currentCharacter, PeekableInputStream inputStream) throws IOException {
-		if (isIdentifierCharacter(currentCharacter)) {
-			this.initialCharacter = currentCharacter;
-			return true;
-		}
-		return false;
+		return null;
 	}
 
 }
