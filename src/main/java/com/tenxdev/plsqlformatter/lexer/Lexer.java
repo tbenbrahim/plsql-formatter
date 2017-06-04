@@ -11,7 +11,7 @@ import java.util.List;
 import com.tenxdev.plsqlformatter.lexer.state.AliasLexerState;
 import com.tenxdev.plsqlformatter.lexer.state.BlockCommentLexerState;
 import com.tenxdev.plsqlformatter.lexer.state.BlockLabelLexerState;
-import com.tenxdev.plsqlformatter.lexer.state.DefaultLexerState;
+import com.tenxdev.plsqlformatter.lexer.state.KeywordAndIdentifierLexerState;
 import com.tenxdev.plsqlformatter.lexer.state.LexerState;
 import com.tenxdev.plsqlformatter.lexer.state.LineCommentLexerState;
 import com.tenxdev.plsqlformatter.lexer.state.NewLineLexerState;
@@ -27,7 +27,7 @@ public class Lexer {
 	private final List<LexerState> lexerStates = Arrays.asList(new BlockCommentLexerState(),
 			new LineCommentLexerState(), new StringLexerState(), new NewLineLexerState(), new WhiteSpaceLexerState(),
 			new PunctuationLexerState(), new OperatorLexerState(), new BlockLabelLexerState(), new AliasLexerState(),
-			new NumericLexerState(), new DefaultLexerState());
+			new NumericLexerState(), new KeywordAndIdentifierLexerState());
 	
 	private UnexpectedInputLexerState unexpectedInputLexerState=new UnexpectedInputLexerState();
 

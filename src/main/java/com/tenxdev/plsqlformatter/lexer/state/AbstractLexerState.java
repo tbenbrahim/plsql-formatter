@@ -1,6 +1,7 @@
 package com.tenxdev.plsqlformatter.lexer.state;
 
 import java.io.IOException;
+import java.util.Set;
 
 import com.tenxdev.plsqlformatter.lexer.PeekableInputStream;
 import com.tenxdev.plsqlformatter.lexer.Token;
@@ -25,5 +26,9 @@ public abstract class AbstractLexerState implements LexerState {
 	}
 
 	protected abstract TokenType process(PeekableInputStream inputStream) throws IOException;
+
+	protected boolean textIsInSet(Set<String> set) {
+		return set.contains(text.toUpperCase());
+	}
 
 }
