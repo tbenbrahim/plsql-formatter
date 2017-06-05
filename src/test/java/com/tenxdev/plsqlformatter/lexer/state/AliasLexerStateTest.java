@@ -11,34 +11,35 @@ import com.tenxdev.plsqlformatter.lexer.PeekableInputStream;
 import com.tenxdev.plsqlformatter.lexer.Token;
 import com.tenxdev.plsqlformatter.lexer.Token.TokenType;
 
-public class BlockCommentLexerStateTest {
+public class AliasLexerStateTest {
 
-	private final BlockCommentLexerState blockCommentLexerState = new BlockCommentLexerState();
+	private final AliasLexerState aliasLexerState = new AliasLexerState();
 
 	@Test
 	public void test() throws IOException {
-		final String input = "/*test*1*/";
+		final String input = "\"test\"a";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			final Token token = blockCommentLexerState.accept(in.read(), in);
-			assertEquals(TokenType.BLOCK_COMMENT, token.getTokenType());
-			assertEquals("test*1", token.getText());
+			final Token token = aliasLexerState.accept(in.read(), in);
+			assertEquals(TokenType.ALIAS, token.getTokenType());
+			assertEquals("test", token.getText());
+			assertEquals('a', in.peek());
 		}
 	}
 
 	@Test
 	public void testEof() throws IOException {
-		final String input = "/*test****";
+		final String input = "\"test";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			final Token token = blockCommentLexerState.accept(in.read(), in);
+			final Token token = aliasLexerState.accept(in.read(), in);
 			assertEquals(TokenType.UNEXPECTED_EOF, token.getTokenType());
 		}
 	}
 
 	@Test
-	public void testNotBlockComment() throws IOException {
-		final String input = "//test****";
+	public void testNotAlias() throws IOException {
+		final String input = "'test'";
 		try (PeekableInputStream in = new PeekableInputStream(input)) {
-			assertNull(blockCommentLexerState.accept(in.read(), in));
+			assertNull(aliasLexerState.accept(in.read(), in));
 		}
 	}
 

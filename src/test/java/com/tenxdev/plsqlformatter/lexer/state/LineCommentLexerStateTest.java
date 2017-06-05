@@ -1,6 +1,6 @@
 package com.tenxdev.plsqlformatter.lexer.state;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -21,6 +21,7 @@ public class LineCommentLexerStateTest {
 			final Token token = lexerState.accept(in.read(),in);
 			assertEquals(TokenType.LINE_COMMENT, token.getTokenType());
 			assertEquals("test", token.getText());
+			assertEquals('\n', in.peek());
 		}
 	}
 
@@ -31,6 +32,7 @@ public class LineCommentLexerStateTest {
 			final Token token = lexerState.accept(in.read(), in);
 			assertEquals(TokenType.LINE_COMMENT, token.getTokenType());
 			assertEquals("test", token.getText());
+			assertEquals('\r', in.peek());
 		}
 	}
 
@@ -41,6 +43,15 @@ public class LineCommentLexerStateTest {
 			final Token token = lexerState.accept(in.read(), in);
 			assertEquals(TokenType.LINE_COMMENT, token.getTokenType());
 			assertEquals("test", token.getText());
+		}
+	}
+	
+	@Test
+	public void testNotLineComment() throws IOException{
+		final String input = "//test";
+		try (PeekableInputStream in = new PeekableInputStream(input)) {
+			final Token token = lexerState.accept(in.read(), in);
+			assertNull(token);
 		}
 	}
 

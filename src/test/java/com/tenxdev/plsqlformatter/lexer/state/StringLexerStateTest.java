@@ -1,6 +1,6 @@
 package com.tenxdev.plsqlformatter.lexer.state;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -40,6 +40,15 @@ public class StringLexerStateTest {
 			final Token token = stringLexerState.accept(in.read(), in);
 			assertEquals(TokenType.STRING, token.getTokenType());
 			assertEquals("'test' 'one' and test 'two'", token.getText());
+		}
+	}
+
+	@Test
+	public void testNotString() throws IOException {
+		final String input = "abc";
+		try (PeekableInputStream in = new PeekableInputStream(input)) {
+			final Token token = stringLexerState.accept(in.read(), in);
+			assertNull(token);
 		}
 	}
 

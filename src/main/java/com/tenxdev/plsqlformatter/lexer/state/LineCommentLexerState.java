@@ -13,11 +13,11 @@ public class LineCommentLexerState extends AbstractLexerState {
 	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
 		if (currentCharacter == DASH && inputStream.nextIs(DASH)){
 			int c;
-			while ((c = inputStream.read()) != -1) {
-				if (c == '\n' || c == '\r' && inputStream.nextIs('\n')) {
+			while ((c = inputStream.peek()) != -1) {
+				if (c == '\n' || c == '\r' ) {
 					return TokenType.LINE_COMMENT;
 				}
-				addCharacter(c);
+				addCharacter(inputStream.read());
 			}
 			return TokenType.LINE_COMMENT;
 		}

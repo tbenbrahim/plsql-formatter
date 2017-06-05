@@ -17,9 +17,8 @@ public class NumericLexerState extends AbstractLexerState {
 			State state = State.Number;
 			addCharacter(currentCharacter);
 			int c;
-			loop: while ((c = inputStream.peek()) != -1) {
-				switch (state) {
-				case Number:
+			while ((c = inputStream.peek()) != -1) {
+				if (state == State.Number) {
 					if (Character.isDigit(c)) {
 						addCharacter(inputStream.read());
 					} else if (c == '.') {
@@ -29,33 +28,31 @@ public class NumericLexerState extends AbstractLexerState {
 						addCharacter(inputStream.read());
 						state = State.ExponentSymbol;
 					} else {
-						break loop;
+						break;
 					}
-					break;
-				case Decimal:
+				} else if (state == State.Decimal) {
 					if (Character.isDigit(c)) {
 						addCharacter(inputStream.read());
 					} else if (c == 'E' || c == 'e') {
 						addCharacter(inputStream.read());
 						state = State.ExponentSymbol;
 					} else {
-						break loop;
+						break;
 					}
-					break;
-				case ExponentSymbol:
+				} else if (state == State.ExponentSymbol) {
 					if (Character.isDigit(c) || c == '-') {
 						addCharacter(inputStream.read());
 						state = State.Exponent;
 					} else {
-						break loop;
+						break;
 					}
-					break;
-				case Exponent:
+				} else if (state == State.Exponent) {
 					if (Character.isDigit(c)) {
 						addCharacter(inputStream.read());
 					} else {
-						break loop;
+						break;
 					}
+				} else{
 					break;
 				}
 			}

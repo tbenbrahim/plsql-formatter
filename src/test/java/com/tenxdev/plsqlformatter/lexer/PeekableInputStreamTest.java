@@ -26,29 +26,16 @@ public class PeekableInputStreamTest {
 
 	@Test
 	public void testPeekRead() throws UnsupportedEncodingException, IOException {
-		String commentText = "***comment * text***";
-		String inputString = "/*" + commentText + "*/ test";
+		String inputString = "Hello World";
 		try (PeekableInputStream in = new PeekableInputStream(
 				new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8)))) {
 			StringBuilder output = new StringBuilder();
 			int c;
-			boolean inComment = false;
-			while ((c = in.read()) != -1) {
-				if (!inComment && c == '/') {
-					if (in.nextIs('*')) {
-						inComment = true;
-						continue;
-					}
-				}
-				if (inComment) {
-					if (c == '*' && in.nextIs('/')) {
-						inComment = false;
-						continue;
-					}
-					output.append((char) c);
-				}
+			while ((c = in.peek()) != -1) {
+				output.append((char) c);
+				in.read();
 			}
-			assertEquals(commentText, output.toString());
+			assertEquals(inputString, output.toString());
 		}
 	}
 

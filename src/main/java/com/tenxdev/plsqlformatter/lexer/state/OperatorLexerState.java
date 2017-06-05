@@ -10,11 +10,16 @@ public class OperatorLexerState extends AbstractLexerState {
 	@Override
 	protected TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException {
 		switch (currentCharacter) {
-		case '=':
 		case '+':
 		case '*':
 			addCharacter(currentCharacter);
 			return TokenType.OPERATOR;
+		case '=':
+			if (inputStream.peek()!='>'){
+				addCharacter(currentCharacter);
+				return TokenType.OPERATOR;
+			}
+			return null;
 		case '/':
 			if (inputStream.peek() != '*') {
 				addCharacter(currentCharacter);

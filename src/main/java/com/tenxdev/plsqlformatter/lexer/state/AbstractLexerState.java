@@ -39,6 +39,9 @@ public abstract class AbstractLexerState implements LexerState {
 
 	@Override
 	public final LexerState setNextLexerState(LexerState lexerState) {
+		if (lexerState == this) {
+			throw new IllegalArgumentException("Next state may not be the same instance");
+		}
 		this.nextLexerState = lexerState;
 		return nextLexerState;
 	}
