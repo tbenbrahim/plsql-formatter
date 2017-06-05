@@ -20,7 +20,7 @@ public class PlSqlLexerTest {
 		assertEquals(new Token(TokenType.WHITESPACE, " "), tokenStream.next());
 		assertEquals(new Token(TokenType.KEYWORD, "FUNCTION"), tokenStream.next());
 		assertEquals(new Token(TokenType.WHITESPACE, " "), tokenStream.next());
-		assertEquals(new Token(TokenType.IDENTIFIER, "foo"), tokenStream.next());
+		assertEquals(new Token(TokenType.IDENTIFIER, "FOO"), tokenStream.next());
 		assertEquals(new Token(TokenType.PUNCTUATION, "("), tokenStream.next());
 		assertEquals(new Token(TokenType.IDENTIFIER, "N"), tokenStream.next());
 		assertEquals(new Token(TokenType.WHITESPACE, " "), tokenStream.next());
