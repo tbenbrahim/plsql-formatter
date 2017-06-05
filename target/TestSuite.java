@@ -13,12 +13,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package com.tenxdev.plsqlformatter.lexer;
+package com.tenxdev.plsqlformatter;
 
-import java.io.IOException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public interface TokenStream {
+import com.tenxdev.plsqlformatter.lexer.LexerTestSuite;
 
-	public Token next() throws IOException;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ LexerTestSuite.class})
+public class TestSuite {
 
 }
