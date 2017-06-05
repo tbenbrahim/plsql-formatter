@@ -1,3 +1,20 @@
+env:
+  global:
+   - secure: "WXF+xLQLAbL4Shu1nMLNy0YkFqCIWt/Q3CC7axcYwqpP3YqPcVTWlsDAj3cht7k5si0w5WNwGORus+N3H82m0Q5WgTmbOW6amAcEFPywwHEnmq+ZqBUeQHFbMstgAbs+QNoB8ejLZbGC8tAJNK4bEaKeda54DoUvZpsPsvjKS24khwW3xXSiILi4Qm1UhwHIn8Nkb++Z6vuGI6KmbGL+05xUIztJph7vWIxaj8NBIEcDJfpLoiXsmjg5QEih8/h3mM1RM7n2e9KE56dCAKu57/XoAIkhC/uYVczP6GhHfux1OyFmi6xLvl39Ozw3AVItR4ms6ctRUdaOD0ay5k2jWl0LUsIIFBhpYhUhZ6GV05kdAOk/GoS5xm20zOKLLlwzr5BlLc4MAqXfpk4osPbqlTcltGVW0qgUqE6Y8ZJx9+pi+KSLNZOZsvA3MF69otcI6IKVAg8Z15dIy0L1jX7E9HczXwNRxDoEm+CtYoOEMCHruwzioNKsAVmaKgdku2ixvDCUjU7VCgrQKLkyIoL0O5X81lmLaXm12qWvSFPU1JERohOdWElax+X4KIL3Q4sG5VSdVfrepeKe1+ETQHejnHQ3fgoNKNaTFZIHZAJetyUwOdYqtHSs3t3zkaYcO5AN9MUzOsG2Wc1Hj8aeobomFLDFE3ItfXWjFON7TXyg9Xg="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "tbenbrahim/plsql-formatter"
+      description: "PL/SQL Formatter"
+    notification_email: tony.benbrahim@gmail.com
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_sca
+
 language: java
 jdk:
   - oraclejdk8
