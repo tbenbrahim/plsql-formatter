@@ -13,14 +13,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package com.tenxdev.plsqlformatter.lexer;
+package com.tenxdev.plsqlformatter;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.tenxdev.plsqlformatter.lexer.state.LexerStateTestSuite;
+import com.tenxdev.plsqlformatter.lexer.LexerTestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ PeekableInputStreamTest.class, TokenTest.class, PlSqlLexerTest.class, LexerStateTestSuite.class })
-public class LexerTestSuite {
+@Suite.SuiteClasses({ LexerTestSuite.class})
+public class TestSuite {
+
 }

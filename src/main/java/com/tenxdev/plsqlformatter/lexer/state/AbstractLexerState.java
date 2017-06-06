@@ -16,7 +16,6 @@
 package com.tenxdev.plsqlformatter.lexer.state;
 
 import java.io.IOException;
-import java.util.Set;
 
 import com.tenxdev.plsqlformatter.lexer.PeekableInputStream;
 import com.tenxdev.plsqlformatter.lexer.Token;
@@ -37,10 +36,6 @@ public abstract class AbstractLexerState implements LexerState {
 
 	protected abstract TokenType process(int currentCharacter, PeekableInputStream inputStream) throws IOException;
 
-	protected boolean textIsInSet(Set<String> set) {
-		return set.contains(text.toUpperCase());
-	}
-
 	@Override
 	public Token accept(int currentCharacter, PeekableInputStream inputStream) throws IOException {
 		text = "";
@@ -60,5 +55,8 @@ public abstract class AbstractLexerState implements LexerState {
 		this.nextLexerState = lexerState;
 		return nextLexerState;
 	}
-
+	
+	public String getText() {
+		return text;
+	}
 }
